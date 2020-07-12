@@ -1,11 +1,16 @@
 package job;
 
 public class Hero {
-	String name;
-	int hp;
+	private String name;
+	private int hp;
+	// static をつけたフィールドは静的フィールドと呼ばれる
+	// 静的フィールドはインスタンス毎ではなくクラスに1つだけ用意される
+	// そういった理由から、クラス変数と呼ばれることもある
+	// なので、名前やhpはそれぞれ違うため独立しているが財布は全員共通のものにしたい場合静的フィールドを用いることで可能になる
+	private static int money;
 
 	public Hero() {
-		this("たかし", 100);
+		this("太郎", 100);
 	}
 
 	public Hero(String name) {
@@ -15,27 +20,26 @@ public class Hero {
 	public Hero(String name, int hp) {
 		this.name = name;
 		this.hp = hp;
+		this.money += 100;
+		System.out.println("勇者"+ this.name +"が誕生しました。100円をプレゼントします。");
 	}
 
-	// 新しいクラスを開発する際toStringとequalsをオーバーライドする必要性がないか検討する必要がある
-
-	// そのまま呼び出しても意味のわからない内容が表示されるため
-	// オーバーライドして表示する内容を定義する
-	public String toString() {
-		return "名前:"+ this.name +"/HP:"+ this.hp;
+	public static int getMoney() {
+		return Hero.money;
 	}
 
-	// equalsはそのまま使っても何を持って等価なのかを判定することができない場合があるため
-	// 場合によってはオーバーライドして定義しなければならない
-	public boolean equals(Object o) {
-		if(this == o) {
-			return true;
-		} else if(o instanceof Hero) {
-			Hero h = (Hero)o;
-			if(this.name.equals(h.name)) {
-				return true;
-			}
-		}
-		return false;
+	public static void setMoney(int money) {
+		Hero.money = money;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	// staticはメソッドにつけることもでき、静的メソッドやクラスメソッドと呼ばれる
+	// 静的メソッドの中に記述するコードは
+	// 同一クラス内のstaticがついていないフィールドやメソッドは使えない
+	public static void setRandomMoney() {
+		Hero.money = (int)(Math.random() * 10000);
 	}
 }
